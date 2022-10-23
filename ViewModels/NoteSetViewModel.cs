@@ -9,16 +9,18 @@ using System.Windows.Data;
 
 public class NoteSetViewModel
 {
-    private readonly object collectionLock = new object();
-    private static readonly Random rng = new();
+    private readonly object collectionLock = new();
+    private static readonly Random Rng = new();
 
     public ObservableCollection<Note> Notes { get; set; } = new();
 
     public ObservableCollection<List<Note>> Groupings { get; set; } = new();
+    
+    public ObservableCollection<List<Note>> Patterns { get; set; } = new();
 
     public Prop<int> GroupSize { get; set; } = new() { Value = 3 };
 
-    public CollectionView AvailableGroupSizes { get; set; } = new ListCollectionView(Enumerable.Range(2, 10).Select(x => x).ToList());
+    public CollectionView AvailableGroupSizes { get; set; } = new ListCollectionView(Enumerable.Range(2, 11).Select(x => x).ToList());
 
     public NoteSetViewModel()
     {
@@ -69,6 +71,26 @@ public class NoteSetViewModel
         }
     }
 
+    public void GeneratePatterns()
+    {
+        this.Patterns.Clear();
+
+        var size = this.GroupSize.Value;
+        if (!PatternDefinitions.PatternTemplates.ContainsKey(size))
+        {
+            return;
+        }
+
+        var templates = PatternDefinitions.PatternTemplates[size];
+        
+        var patterns = templates.Select(template => template.Select(x => this.Notes[x]).ToList()).ToList();
+
+        foreach (var pattern in patterns)
+        {
+            this.Patterns.Add(pattern);
+        }
+    }
+
     private List<Note> GetGrouping(int start, int size)
     {
         var result = new List<Note>();
@@ -87,7 +109,7 @@ public class NoteSetViewModel
         while (n > 1)
         {
             n--;
-            var k = rng.Next(n + 1);
+            var k = Rng.Next(n + 1);
             (list[k], list[n]) = (list[n], list[k]);
         }
     }

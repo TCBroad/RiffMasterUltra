@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
 
-public class Prop<T> : INotifyPropertyChanged
+public sealed class Prop<T> : INotifyPropertyChanged
 {
     private T value;
 
@@ -19,15 +19,15 @@ public class Prop<T> : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    private bool SetField(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-        field = value;
+        if (EqualityComparer<T>.Default.Equals(field, newValue)) return false;
+        field = newValue;
         this.OnPropertyChanged(propertyName);
         return true;
     }
