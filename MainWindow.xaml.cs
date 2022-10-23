@@ -1,5 +1,6 @@
 ﻿namespace RiffMasterUltra
 {
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -71,9 +72,8 @@
             foreach (var grouping in this.viewModel.Groupings)
             {
                 var panel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(5)};
-                for (var index = 0; index < grouping.Count; index++)
+                foreach (var note in grouping)
                 {
-                    var note = grouping[index];
                     var label = new Label
                     {
                         Content = note.ToString(),
@@ -97,6 +97,45 @@
                 this.GroupList.Children.Add(panel);
             }
         }
+        
+        private void GeneratePatternLabels()
+        {
+            if (this.PatternList == null)
+            {
+                return; 
+            }
+            
+            this.PatternList.Children.Clear();
+            this.PatternHeading.Visibility = this.viewModel.Patterns.Any() ? Visibility.Visible : Visibility.Hidden;
+
+            foreach (var grouping in this.viewModel.Patterns)
+            {
+                var panel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(5)};
+                foreach (var note in grouping)
+                {
+                    var label = new Label
+                    {
+                        Content = note.ToString(),
+                        FontSize = 15,
+                        Width = 30,
+                        HorizontalContentAlignment = HorizontalAlignment.Center,
+                    };
+
+                    var border = new Border
+                    {
+                        Child = label,
+                        BorderThickness = new Thickness(1),
+                        BorderBrush = new SolidColorBrush(Colors.Black),
+                        Margin = new Thickness(1, 1, 1 ,1)
+                    };
+                
+                    //Grid.SetColumn(border, index);
+                    panel.Children.Add(border);
+                }
+                
+                this.PatternList.Children.Add(panel);
+            }
+        }
 
         private void Regenerate(object sender, RoutedEventArgs e)
         {
@@ -110,8 +149,10 @@
         private void UpdateGroups(object sender, SelectionChangedEventArgs? e)
         {
             this.viewModel.GenerateGroupings();
+            this.viewModel.GeneratePatterns();
             
             this.GenerateGroupLabels();
+            this.GeneratePatternLabels();
         }
     }
 }

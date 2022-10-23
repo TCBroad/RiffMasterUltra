@@ -44,7 +44,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 
-                <Label Grid.Column="0" Content="Groupings" FontSize="20" />
+                <Label Grid.Column="0" Content="Sequential groupings" FontSize="20" />
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <Label Content="Size" FontSize="20" Margin="0, 0, 5, 0" />
                     <ComboBox Name="GroupSize"
@@ -56,6 +56,13 @@
             <WrapPanel Name="GroupList" Orientation="Horizontal">
                 <Label Content="Test" />
             </WrapPanel>
+            
+            <StackPanel Margin="0,10,0,10">
+                <Label FontSize="20" Content="Patterns" Name="PatternHeading" />
+                <WrapPanel Name="PatternList" Orientation="Horizontal">
+                    <Label Content="Test" />
+                </WrapPanel>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
