@@ -31,6 +31,11 @@ public static class PatternDefinitions
                 new[] { 1, 5, 9 }, 
                 new[] { 2, 6, 10 },  
                 new[] { 3, 7, 11 }, 
+                
+                new[] { 0, 2, 4 }, 
+                new[] { 1, 3, 5 }, 
+                new[] { 6, 8, 10 }, 
+                new[] { 7, 9, 11 } 
             }
         },
         {

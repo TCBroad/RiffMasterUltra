@@ -102,7 +102,7 @@ public class NoteSetViewModel
         
         return result;
     }
-    
+
     private static void Shuffle<T>(IList<T> list)
     {
         var n = list.Count;
@@ -113,6 +113,4 @@ public class NoteSetViewModel
             (list[k], list[n]) = (list[n], list[k]);
         }
     }
-
-    
 }
